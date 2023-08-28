@@ -5,19 +5,20 @@ set /P new-branch-name=輸入新分支名稱:
 :: 設定使否執行 (1: 執行、0: 跳過)
 set vcp-data-centralized-flag=0
 set vcp-esign-bl-flag=0
-set vcp-msg-center-flag=0
+set vcp-msg-center-flag=1
 set vcp-payment-flag=0
 set vcp-payment-momo-bff-flag=0
 set vcp-payment-momo-bl-flag=0
 set vcp-payment-napas-bff-flag=0
 set vcp-payment-napas-bl-flag=0
 set vcp-virtual-account-flag=0
+set vcp-itext-flag=1
 set vcp-middle-bo-bff-flag=0
+set vcp-middle-bo-web-flag=1
 set vcp-middle-bo-cl-flag=0
-set vcp-itext-flag=0
 set vcp-cdw-batch-flag=0
 set vcp-file-batch-flag=0
-set vcp-housekeeping-batch-flag=1
+set vcp-housekeeping-batch-flag=0
 
 
 :: 設定資料夾
@@ -32,6 +33,7 @@ set vcp-payment-napas-bff-dir=/d D:\TPI\消金\code\cathay\vcp\payment-napas-bff
 set vcp-payment-napas-bl-dir=/d D:\TPI\消金\code\cathay\vcp\payment-napas-bl
 set vcp-virtual-account-dir=/d D:\TPI\消金\code\cathay\vcp\virtual-account-service
 set vcp-middle-bo-bff-dir=/d D:\TPI\消金\code\cathay\vcp\middle-bo-bff
+set vcp-middle-bo-web-dir=/d D:\TPI\消金\code\cathay\vcp\middle-bo-web
 set vcp-middle-bo-cl-dir=/d D:\TPI\消金\code\cathay\vcp\middle-bo-cl
 set vcp-itext-dir=/d D:\TPI\消金\code\cathay\vcp\itext
 set vcp-cdw-batch-dir=/d D:\TPI\消金\code\cathay\vcp\cdw-batch-java
@@ -246,6 +248,25 @@ git push
 echo %project-name% - End
 :vcp-middle-bo-bff-end
 
+:: vcp-middle-bo-web
+if %vcp-middle-bo-web-flag% == 1 ( 
+  goto :vcp-middle-bo-web-start
+) else (
+  goto :vcp-middle-bo-web-end
+)
+:vcp-middle-bo-web-start
+set project-name=middle-bo-web
+echo %project-name% - Start
+cd %vcp-middle-bo-web-dir%
+git add --all
+git commit -m %new-branch-name%
+git push --set-upstream origin %new-branch-name%
+git checkout main
+git diff --name-status main %new-branch-name% > %export-diff-dir%\%project-name%-diff.txt
+git merge %new-branch-name%
+git push
+echo %project-name% - End
+:vcp-middle-bo-web-end
 
 :: vcp-middle-bo-cl
 if %vcp-middle-bo-cl-flag% == 1 ( 

@@ -3,9 +3,8 @@
 set /P new-branch-name=輸入新分支名稱:
 
 :: 設定使否執行 (1: 執行、0: 跳過)
-:: 設定使否執行 (1: 執行、0: 跳過)
 set vmb-app-bff-flag=1
-set vmb-member-cl-flag=1
+set vmb-member-cl-flag=1	
 set vmb-channel-bo-bff-flag=0
 set vmb-channel-bo-cl-flag=1
 set vmb-channel-notification-bl-flag=0

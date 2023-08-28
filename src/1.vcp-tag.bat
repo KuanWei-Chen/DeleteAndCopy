@@ -5,7 +5,7 @@ set /P tag-name=輸入 tag名稱:
 :: 設定使否執行 (1: 執行、0: 跳過)
 set vcp-data-centralized-flag=0
 set vcp-esign-bl-flag=0
-set vcp-msg-center-flag=0
+set vcp-msg-center-flag=1
 set vcp-payment-flag=0
 set vcp-payment-momo-bff-flag=0
 set vcp-payment-momo-bl-flag=0
@@ -14,7 +14,8 @@ set vcp-payment-napas-bl-flag=0
 set vcp-virtual-account-flag=0
 set vcp-itext-flag=1
 set vcp-middle-bo-bff-flag=0
-set vcp-middle-bo-bl-flag=0
+set vcp-middle-bo-web-flag=1
+set vcp-middle-bo-cl-flag=0
 set vcp-cdw-batch-flag=0
 set vcp-file-batch-flag=0
 set vcp-housekeeping-batch-flag=0
@@ -31,7 +32,8 @@ set vcp-payment-napas-bl-dir=/d D:\TPI\消金\code\tpi\vcp\vn-loancloud-payment-na
 set vcp-virtual-account-dir=/d D:\TPI\消金\code\tpi\vcp\vn-loancloud-virtual-account
 set vcp-itext-dir=/d D:\TPI\消金\code\tpi\vcp\itext
 set vcp-middle-bo-bff-dir=/d D:\TPI\消金\code\tpi\vcp\vn-loancloud-middle-bo-bff
-set vcp-middle-bo-bl-dir=/d D:\TPI\消金\code\tpi\vcp\vn-loancloud-middle-bo-cl
+set vcp-middle-bo-web-dir=/d D:\TPI\消金\code\tpi\vcp\middle-web
+set vcp-middle-bo-cl-dir=/d D:\TPI\消金\code\tpi\vcp\vn-loancloud-middle-bo-cl
 set vcp-cdw-batch-dir=/d D:\TPI\消金\code\tpi\vcp\vn-loancloud-cdw-batch
 set vcp-file-batch-dir=/d D:\TPI\消金\code\tpi\vcp\vn-loancloud-file-batch
 set vcp-housekeeping-batch-dir=/d D:\TPI\消金\code\tpi\vcp\vn-loancloud-housekeeping-batch
@@ -227,22 +229,39 @@ git push --tags
 echo %project-name% - End
 :vcp-middle-bo-bff-end
 
-:: vcp-middle-bo-bl
-if %vcp-middle-bo-bl-flag% == 1 ( 
-  goto :vcp-middle-bo-bl-start
+:: vcp-middle-bo-web
+if %vcp-middle-bo-web-flag% == 1 ( 
+  goto :vcp-middle-bo-web-start
 ) else (
-  goto :vcp-middle-bo-bl-end
+  goto :vcp-middle-bo-web-end
 )
-:vcp-middle-bo-bl-start
-set project-name=middle-bo-bl
+:vcp-middle-bo-web-start
+set project-name=middle-bo-web
 echo %project-name% - Start
-cd %vcp-middle-bo-bl-dir%
+cd %vcp-middle-bo-web-dir%
 git pull
 git rev-parse HEAD
 git tag %tag-name%
 git push --tags
 echo %project-name% - End
-:vcp-middle-bo-bl-end
+:vcp-middle-bo-web-end
+
+:: vcp-middle-bo-cl
+if %vcp-middle-bo-cl-flag% == 1 ( 
+  goto :vcp-middle-bo-cl-start
+) else (
+  goto :vcp-middle-bo-cl-end
+)
+:vcp-middle-bo-cl-start
+set project-name=middle-bo-cl
+echo %project-name% - Start
+cd %vcp-middle-bo-cl-dir%
+git pull
+git rev-parse HEAD
+git tag %tag-name%
+git push --tags
+echo %project-name% - End
+:vcp-middle-bo-cl-end
 
 :: vcp-cdw-batch
 if %vcp-cdw-batch-flag% == 1 ( 
